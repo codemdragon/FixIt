@@ -38,6 +38,16 @@
     min-height: 100vh;
     font-size: 15px;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* Mobile select fix */
+  select, button, input, textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .select-wrap select {
+    background-image: none;
   }
 
   /* ── LAYOUT ── */
@@ -670,12 +680,12 @@
     <div class="status-actions">
       <p>Update Status</p>
       <div class="status-btns">
-        <button class="status-btn set-pending" onclick="setStatus('pending')">🟡 Pending</button>
-        <button class="status-btn set-inprogress" onclick="setStatus('inprogress')">🔵 In Progress</button>
-        <button class="status-btn set-resolved" onclick="setStatus('resolved')">🟢 Resolved</button>
+        <button class="status-btn set-pending" data-status="pending">🟡 Pending</button>
+        <button class="status-btn set-inprogress" data-status="inprogress">🔵 In Progress</button>
+        <button class="status-btn set-resolved" data-status="resolved">🟢 Resolved</button>
       </div>
     </div>
-    <button class="close-sheet" onclick="closeSheet()">Close</button>
+    <button class="close-sheet" id="closeSheetBtn">Close</button>
   </div>
 </div>
 
@@ -696,10 +706,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Export to window so inline event handlers (onclick) still work
-window.supabase = supabase;
-window.setStatus = setStatus;
-window.closeSheet = closeSheet;
+// Bind status buttons and close button via addEventListener (ESM modules don't support inline onclick)
+document.querySelectorAll('.status-btn[data-status]').forEach(btn => {
+  btn.addEventListener('click', () => setStatus(btn.dataset.status));
+});
+document.getElementById('closeSheetBtn').addEventListener('click', () => closeSheet());
 
 // ══════════════════════════════════════════════
 // STATE
