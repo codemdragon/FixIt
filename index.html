@@ -138,7 +138,8 @@
   .stat-card:active { transform: scale(0.97); }
   .stat-num {
     font-family: var(--font-display);
-    font-size: 26px; font-weight: 800; line-height: 1;
+    font-size: 26px; font-weight: 800; line-height: 1.3;
+    padding: 2px 0;
   }
   .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .stat-card.urgent .stat-num { color: var(--red); }
@@ -480,6 +481,47 @@
   }
   .nav-center-btn svg { width: 22px; height: 22px; stroke: #0d0f12; stroke-width: 2.5; }
   .nav-center-btn:active { transform: scale(0.92); box-shadow: 0 2px 8px rgba(245,166,35,0.3); }
+
+  /* ── AUTH VIEW ── */
+  .auth-container { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - 80px); padding:20px; }
+  .auth-card { width:100%; max-width:380px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:32px 24px; }
+  .auth-logo { font-family:var(--font-display); font-weight:800; font-size:28px; text-align:center; margin-bottom:24px; }
+  .auth-logo span { color:var(--accent); }
+  .auth-tabs { display:flex; margin-bottom:24px; background:var(--surface2); border-radius:var(--radius-sm); padding:3px; }
+  .auth-tab { flex:1; padding:10px; text-align:center; font-family:var(--font-body); font-size:13px; font-weight:600; background:transparent; border:none; color:var(--muted); border-radius:6px; cursor:pointer; transition:all 0.15s; }
+  .auth-tab.active { background:var(--accent); color:#0d0f12; }
+  .auth-form { display:flex; flex-direction:column; gap:14px; }
+  .auth-form.hidden { display:none; }
+  .auth-error { font-size:12px; color:var(--red); text-align:center; padding:8px; background:var(--red-dim); border-radius:var(--radius-sm); display:none; }
+  .auth-error.show { display:block; }
+  .auth-success { font-size:12px; color:var(--green); text-align:center; padding:8px; background:var(--green-dim); border-radius:var(--radius-sm); display:none; }
+  .auth-success.show { display:block; }
+
+  /* ── MODE TOGGLE ── */
+  .mode-toggle { display:flex; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:2px; }
+  .mode-btn { font-family:var(--font-body); font-size:11px; font-weight:600; padding:5px 12px; border-radius:18px; background:transparent; border:none; color:var(--muted); cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+  .mode-btn.active { background:var(--accent-dim); color:var(--accent); }
+
+  /* ── USER SECTION (topbar) ── */
+  .topbar-right { display:flex; align-items:center; gap:8px; position:relative; }
+  .user-avatar { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--accent); cursor:pointer; }
+  .signout-btn { width:36px; height:36px; background:var(--surface2); border:1px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .signout-btn svg { width:16px; height:16px; stroke:var(--muted); }
+
+  /* ── ADMIN VIEW ── */
+  .admin-tabs { display:flex; gap:6px; padding:0 20px 16px; overflow-x:auto; scrollbar-width:none; }
+  .admin-tabs::-webkit-scrollbar { display:none; }
+  .admin-tab { flex-shrink:0; font-family:var(--font-body); font-size:12px; font-weight:600; padding:7px 16px; border-radius:20px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .admin-tab.active { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+  .admin-list { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+  .admin-item { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; }
+  .admin-item span { font-size:14px; }
+  .admin-delete { width:28px; height:28px; background:var(--red-dim); border:none; border-radius:6px; color:var(--red); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+  .admin-delete:active { background:var(--red); color:#fff; }
+  .admin-add-row { display:flex; gap:8px; }
+  .admin-add-row input { flex:1; font-family:var(--font-body); font-size:14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text); padding:12px 14px; outline:none; -webkit-appearance:none; }
+  .admin-add-row input:focus { border-color:var(--accent); }
+  .admin-add-btn { font-family:var(--font-display); font-size:13px; font-weight:700; padding:12px 20px; background:var(--accent); color:#0d0f12; border:none; border-radius:var(--radius-sm); cursor:pointer; white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -491,25 +533,91 @@
       <div class="logo-dot"></div>
       Fix<span>It</span>
     </div>
-    <div class="notif-btn" id="notifBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-      </svg>
-      <div class="notif-badge" id="notifBadge">2</div>
+    <div class="topbar-right" id="topbarRight" style="display:none">
+      <div class="notif-btn" id="notifBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <div class="notif-badge" id="notifBadge" style="display:none">0</div>
+      </div>
+      <div class="user-avatar" id="userAvatar" title="You"></div>
+      <div class="signout-btn" id="signoutBtn" title="Sign Out">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </div>
     </div>
   </header>
 
   <main class="content">
 
+    <!-- ── AUTH VIEW ── -->
+    <div class="view active" id="view-auth">
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-logo">Fix<span>It</span></div>
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="authTabLogin">Sign In</button>
+            <button class="auth-tab" id="authTabSignup">Sign Up</button>
+          </div>
+          <div class="auth-error" id="authError"></div>
+          <div class="auth-success" id="authSuccess"></div>
+          <!-- Login Form -->
+          <div class="auth-form" id="loginForm">
+            <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com" /></div>
+            <div class="field">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label style="margin:0;">Password</label>
+                <a href="#" id="forgotPasswordLink" style="font-size:12px; font-weight:600; color:var(--accent); text-decoration:none;">Forgot?</a>
+              </div>
+              <input type="password" id="loginPassword" placeholder="Enter password" />
+            </div>
+            <button class="submit-btn" id="loginBtn">Sign In</button>
+          </div>
+          <!-- Reset Password Form -->
+          <div class="auth-form hidden" id="resetForm">
+            <p style="font-size:13px; color:var(--muted);">Enter your email and we'll send you a password reset link.</p>
+            <div class="field"><label>Email</label><input type="email" id="resetEmail" placeholder="your@email.com" /></div>
+            <button class="submit-btn" id="sendResetBtn">Send Reset Link</button>
+            <button class="auth-tab" id="backToLoginBtn" style="margin-top:4px; border:1px solid var(--border); background:transparent;">Back to Sign In</button>
+          </div>
+          <!-- Update Password Form -->
+          <div class="auth-form hidden" id="updatePasswordForm">
+            <p style="font-size:13px; color:var(--muted);">Please enter your new password.</p>
+            <div class="field"><label>New Password</label><input type="password" id="newPassword" placeholder="Min 6 characters" /></div>
+            <button class="submit-btn" id="updatePasswordBtn">Update Password</button>
+          </div>
+          <!-- Signup Form -->
+          <div class="auth-form hidden" id="signupForm">
+            <div class="field"><label>Name</label><input type="text" id="signupName" placeholder="Your display name" /></div>
+            <div class="field"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com" /></div>
+            <div class="field"><label>Role</label>
+              <div class="select-wrap"><select id="signupRole"><option value="">Select a role</option></select></div>
+            </div>
+            <div class="field"><label>Password</label><input type="password" id="signupPassword" placeholder="Create a password (min 6 chars)" /></div>
+            <button class="submit-btn" id="signupBtn">Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── DASHBOARD VIEW ── -->
-    <div class="view active" id="view-dashboard">
+    <div class="view" id="view-dashboard">
       <div class="dashboard-header">
         <div>
           <h2>Issues</h2>
           <p id="activeCount">Loading...</p>
         </div>
-        <div class="date-chip" id="dateChip"></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="mode-toggle" id="modeToggle">
+            <button class="mode-btn active" data-mode="universal">🌐 All</button>
+            <button class="mode-btn" data-mode="user">👤 Mine</button>
+          </div>
+          <div class="date-chip" id="dateChip"></div>
+        </div>
       </div>
 
       <div class="stats">
@@ -644,10 +752,25 @@
       <div class="history-list" id="historyList"></div>
     </div>
 
+    <!-- ── ADMIN VIEW ── -->
+    <div class="view" id="view-admin">
+      <div class="form-header">
+        <h2>Admin Panel</h2>
+        <p>Manage roles, locations, categories, and people</p>
+      </div>
+      <div class="admin-tabs" id="adminTabs">
+        <button class="admin-tab active" data-tab="roles">Roles</button>
+        <button class="admin-tab" data-tab="locations">Locations</button>
+        <button class="admin-tab" data-tab="categories">Categories</button>
+        <button class="admin-tab" data-tab="people">People</button>
+      </div>
+      <div class="form-body" id="adminContent"></div>
+    </div>
+
   </main>
 
   <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" id="mainNav">
     <div class="nav-item active" data-view="dashboard" id="nav-dashboard">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -666,6 +789,13 @@
         <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/>
       </svg>
       <span>History</span>
+    </div>
+    <div class="nav-item" data-view="admin" id="nav-admin" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span>Admin</span>
     </div>
   </nav>
 </div>
@@ -698,19 +828,9 @@
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// ══════════════════════════════════════════════
-// SUPABASE CONFIG
-// ══════════════════════════════════════════════
 const SUPABASE_URL = 'https://zhwxodflwalmhbrirjdm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpod3hvZGZsd2FsbWhicmlyamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MzQ3OTYsImV4cCI6MjA5MDAxMDc5Nn0.vkC-W3VDMbkxmuQx3g-Gb15m17yxd2T79UAxmioZMjY';
-
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// Bind status buttons and close button via addEventListener (ESM modules don't support inline onclick)
-document.querySelectorAll('.status-btn[data-status]').forEach(btn => {
-  btn.addEventListener('click', () => setStatus(btn.dataset.status));
-});
-document.getElementById('closeSheetBtn').addEventListener('click', () => closeSheet());
 
 // ══════════════════════════════════════════════
 // STATE
@@ -718,6 +838,12 @@ document.getElementById('closeSheetBtn').addEventListener('click', () => closeSh
 let issues = [];
 let activeFilter = 'all';
 let selectedIssueId = null;
+let currentUser = null;
+let currentProfile = null;
+let isAdmin = false;
+let viewMode = 'universal';
+let allRoles = [], allLocations = [], allCategories = [], allStaff = [];
+let activeAdminTab = 'roles';
 
 // ══════════════════════════════════════════════
 // HELPERS
@@ -733,12 +859,17 @@ function timeAgo(dateStr) {
   if (days < 30) return days + 'd ago';
   return Math.floor(days / 30) + 'mo ago';
 }
-
 function statusLabel(s) {
   return s === 'pending' ? 'Pending' : s === 'inprogress' ? 'In Progress' : 'Resolved';
 }
-
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
 function issueCardHTML(i) {
+  const reportedBy = i.reported_by_name ? `<span class="meta-chip">📝 ${i.reported_by_name}</span>` : '';
   return `
   <div class="issue-card ${i.priority}" data-id="${i.id}">
     <div class="issue-top">
@@ -749,19 +880,210 @@ function issueCardHTML(i) {
       <span class="meta-chip">📍 ${i.location}</span>
       <span class="meta-chip">🔧 ${i.category}</span>
       ${i.assignee && i.assignee !== 'Unassigned' ? `<span class="meta-chip">👤 ${i.assignee.split(' ')[0]}</span>` : ''}
+      ${reportedBy}
     </div>
     <div class="issue-time">${timeAgo(i.created_at)}</div>
   </div>`;
 }
 
 // ══════════════════════════════════════════════
-// FETCH ISSUES FROM SUPABASE
+// AUTH
+// ══════════════════════════════════════════════
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg; el.classList.add('show');
+  document.getElementById('authSuccess').classList.remove('show');
+}
+function showAuthSuccess(msg) {
+  const el = document.getElementById('authSuccess');
+  el.textContent = msg; el.classList.add('show');
+  document.getElementById('authError').classList.remove('show');
+}
+function clearAuthMessages() {
+  document.getElementById('authError').classList.remove('show');
+  document.getElementById('authSuccess').classList.remove('show');
+}
+
+// Auth tab switching
+function resetAuthTabs() {
+  document.querySelector('.auth-tabs').style.display = 'flex';
+  document.getElementById('resetForm').classList.add('hidden');
+  document.getElementById('updatePasswordForm').classList.add('hidden');
+}
+
+document.getElementById('authTabLogin').addEventListener('click', () => {
+  resetAuthTabs();
+  document.getElementById('authTabLogin').classList.add('active');
+  document.getElementById('authTabSignup').classList.remove('active');
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('signupForm').classList.add('hidden');
+  clearAuthMessages();
+});
+
+document.getElementById('authTabSignup').addEventListener('click', () => {
+  resetAuthTabs();
+  document.getElementById('authTabSignup').classList.add('active');
+  document.getElementById('authTabLogin').classList.remove('active');
+  document.getElementById('signupForm').classList.remove('hidden');
+  document.getElementById('loginForm').classList.add('hidden');
+  clearAuthMessages();
+});
+
+document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.querySelector('.auth-tabs').style.display = 'none';
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('resetForm').classList.remove('hidden');
+  clearAuthMessages();
+});
+
+document.getElementById('backToLoginBtn').addEventListener('click', () => {
+  document.getElementById('authTabLogin').click();
+});
+
+// Login
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) { showAuthError('Please fill in all fields'); return; }
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = 'Sign In';
+  if (error) { showAuthError(error.message); return; }
+});
+
+// Signup
+document.getElementById('signupBtn').addEventListener('click', async () => {
+  const nickname = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const roleId = document.getElementById('signupRole').value;
+  const password = document.getElementById('signupPassword').value;
+  if (!nickname || !email || !roleId || !password) { showAuthError('Please fill in all fields'); return; }
+  if (password.length < 6) { showAuthError('Password must be at least 6 characters'); return; }
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = 'Creating account…';
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  btn.disabled = false; btn.textContent = 'Create Account';
+  if (error) { showAuthError(error.message); return; }
+  if (data.user) {
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: data.user.id, nickname, role_id: parseInt(roleId)
+    });
+    if (profileError) { showAuthError('Account created but profile failed: ' + profileError.message); return; }
+    if (!data.session) {
+      showAuthSuccess('Account created! Check your email to confirm, then sign in.');
+    }
+  }
+});
+
+// Signout
+document.getElementById('signoutBtn').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+});
+
+// Password Reset
+document.getElementById('sendResetBtn').addEventListener('click', async () => {
+  const email = document.getElementById('resetEmail').value.trim();
+  if (!email) { showAuthError('Please enter your email'); return; }
+  const btn = document.getElementById('sendResetBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+  if (error) { showAuthError(error.message); return; }
+  showAuthSuccess('Password reset link sent! Check your email.');
+});
+
+// Update Password
+document.getElementById('updatePasswordBtn').addEventListener('click', async () => {
+  const password = document.getElementById('newPassword').value;
+  if (!password || password.length < 6) { showAuthError('Password must be at least 6 characters'); return; }
+  const btn = document.getElementById('updatePasswordBtn');
+  btn.disabled = true; btn.textContent = 'Updating…';
+  const { error } = await supabase.auth.updateUser({ password });
+  btn.disabled = false; btn.textContent = 'Update Password';
+  if (error) { showAuthError(error.message); return; }
+  showAuthSuccess('Password updated! You can now sign in.');
+  setTimeout(() => {
+    document.getElementById('updatePasswordForm').classList.add('hidden');
+    document.getElementById('authTabLogin').click();
+  }, 2000);
+});
+
+// ══════════════════════════════════════════════
+// LOAD MASTER DATA
+// ══════════════════════════════════════════════
+async function loadMasterData() {
+  const [rolesRes, locsRes, catsRes, staffRes] = await Promise.all([
+    supabase.from('roles').select('*').order('name'),
+    supabase.from('locations').select('*').order('name'),
+    supabase.from('categories').select('*').order('name'),
+    supabase.from('staff').select('*').order('name'),
+  ]);
+  allRoles = rolesRes.data || [];
+  allLocations = locsRes.data || [];
+  allCategories = catsRes.data || [];
+  allStaff = staffRes.data || [];
+}
+
+async function loadProfile() {
+  if (!currentUser) return;
+  const { data } = await supabase.from('profiles').select('*, roles(name)').eq('id', currentUser.id).single();
+  currentProfile = data;
+  isAdmin = data?.roles?.name === 'Admin';
+}
+
+// ══════════════════════════════════════════════
+// APP SHELL (show/hide auth vs main app)
+// ══════════════════════════════════════════════
+function showAppShell() {
+  document.getElementById('view-auth').classList.remove('active');
+  document.getElementById('topbarRight').style.display = 'flex';
+  document.getElementById('mainNav').style.display = 'flex';
+  if (currentProfile) {
+    document.getElementById('userAvatar').textContent = currentProfile.nickname.charAt(0).toUpperCase();
+    document.getElementById('userAvatar').title = currentProfile.nickname;
+  }
+  if (isAdmin) {
+    document.getElementById('nav-admin').style.display = 'flex';
+  } else {
+    document.getElementById('nav-admin').style.display = 'none';
+  }
+  populateReportDropdowns();
+}
+function showAuthScreen() {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-auth').classList.add('active');
+  document.getElementById('topbarRight').style.display = 'none';
+  document.getElementById('mainNav').style.display = 'none';
+  // Populate signup role dropdown
+  const roleSelect = document.getElementById('signupRole');
+  roleSelect.innerHTML = '<option value="">Select a role</option>' +
+    allRoles.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// POPULATE REPORT FORM DROPDOWNS
+// ══════════════════════════════════════════════
+function populateReportDropdowns() {
+  const catSelect = document.getElementById('f-category');
+  catSelect.innerHTML = '<option value="">Select category</option>' +
+    allCategories.map(c => `<option>${c.name}</option>`).join('');
+  const locSelect = document.getElementById('f-location');
+  locSelect.innerHTML = '<option value="">Select location</option>' +
+    allLocations.map(l => `<option>${l.name}</option>`).join('');
+  const assignSelect = document.getElementById('f-assignee');
+  assignSelect.innerHTML = '<option value="">Unassigned</option>' +
+    allStaff.map(s => `<option>${s.name}${s.role ? ' (' + s.role + ')' : ''}</option>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// FETCH ISSUES
 // ══════════════════════════════════════════════
 async function fetchIssues() {
-  const { data, error } = await supabase
-    .from('issues')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const { data, error } = await supabase.from('issues').select('*').order('created_at', { ascending: false });
   if (error) { console.error('Fetch error:', error); return; }
   issues = data || [];
 }
@@ -777,6 +1099,7 @@ async function showView(name) {
   if (nav) nav.classList.add('active');
   if (name === 'dashboard') { await fetchIssues(); renderDashboard(); }
   if (name === 'history') { await fetchIssues(); renderHistory(); }
+  if (name === 'admin') { await loadMasterData(); renderAdminTab(); }
 }
 
 document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
@@ -788,25 +1111,65 @@ document.getElementById('nav-report-btn').addEventListener('click', () => {
 });
 
 // ══════════════════════════════════════════════
+// NOTIFICATIONS (bell icon)
+// ══════════════════════════════════════════════
+function updateNotifications() {
+  if (!currentProfile) return;
+  const nick = currentProfile.nickname.toLowerCase();
+  const myActive = issues.filter(i =>
+    i.status !== 'resolved' && i.assignee &&
+    i.assignee.toLowerCase().includes(nick)
+  );
+  const badge = document.getElementById('notifBadge');
+  badge.textContent = myActive.length;
+  badge.style.display = myActive.length > 0 ? 'flex' : 'none';
+}
+
+document.getElementById('notifBtn').addEventListener('click', () => {
+  // Switch to user mode and dashboard
+  viewMode = 'user';
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.mode-btn[data-mode="user"]').classList.add('active');
+  showView('dashboard');
+});
+
+// ══════════════════════════════════════════════
+// MODE TOGGLE (Universal vs User)
+// ══════════════════════════════════════════════
+document.getElementById('modeToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.mode-btn');
+  if (!btn) return;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  viewMode = btn.dataset.mode;
+  renderDashboard();
+});
+
+// ══════════════════════════════════════════════
 // RENDER DASHBOARD
 // ══════════════════════════════════════════════
 function renderDashboard() {
-  const active = issues.filter(i => i.status !== 'resolved');
-  const urgent = issues.filter(i => i.priority === 'high' && i.status !== 'resolved');
-  const inProg = issues.filter(i => i.status === 'inprogress');
-  const resolved = issues.filter(i => i.status === 'resolved');
+  let pool = issues;
+  // User mode: filter to assigned issues
+  if (viewMode === 'user' && currentProfile) {
+    const nick = currentProfile.nickname.toLowerCase();
+    pool = issues.filter(i => i.assignee && i.assignee.toLowerCase().includes(nick));
+  }
+
+  const active = pool.filter(i => i.status !== 'resolved');
+  const urgent = pool.filter(i => i.priority === 'high' && i.status !== 'resolved');
+  const inProg = pool.filter(i => i.status === 'inprogress');
+  const resolved = pool.filter(i => i.status === 'resolved');
 
   document.getElementById('statUrgent').textContent = urgent.length;
   document.getElementById('statInProgress').textContent = inProg.length;
   document.getElementById('statResolved').textContent = resolved.length;
   document.getElementById('activeCount').textContent = active.length + ' active issue' + (active.length !== 1 ? 's' : '');
-  document.getElementById('notifBadge').textContent = urgent.length;
-  document.getElementById('notifBadge').style.display = urgent.length ? 'flex' : 'none';
 
   const now = new Date();
   document.getElementById('dateChip').textContent = now.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
 
-  let filtered = issues.filter(i => i.status !== 'resolved');
+  let filtered = pool.filter(i => i.status !== 'resolved');
   if (activeFilter === 'high') filtered = filtered.filter(i => i.priority === 'high');
   else if (activeFilter === 'medium') filtered = filtered.filter(i => i.priority === 'medium');
   else if (activeFilter === 'low') filtered = filtered.filter(i => i.priority === 'low');
@@ -822,6 +1185,8 @@ function renderDashboard() {
   list.querySelectorAll('.issue-card').forEach(card => {
     card.addEventListener('click', () => openSheet(parseInt(card.dataset.id)));
   });
+
+  updateNotifications();
 }
 
 // ══════════════════════════════════════════════
@@ -871,31 +1236,21 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
   const assignee = document.getElementById('f-assignee').value || 'Unassigned';
   const desc = document.getElementById('f-desc').value.trim();
 
-  // Disable button during insert
   const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Submitting…';
+  btn.disabled = true; btn.textContent = 'Submitting…';
 
-  const { error } = await supabase.from('issues').insert({
-    title,
-    description: desc,
-    category: cat,
-    location: loc,
-    priority,
-    status: 'pending',
-    assignee
-  });
+  const insertData = { title, description: desc, category: cat, location: loc, priority, status: 'pending', assignee };
+  if (currentUser) {
+    insertData.reported_by = currentUser.id;
+    insertData.reported_by_name = currentProfile?.nickname || 'Unknown';
+  }
 
+  const { error } = await supabase.from('issues').insert(insertData);
   btn.disabled = false;
   btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Submit Issue`;
 
-  if (error) {
-    console.error('Insert error:', error);
-    showToast('❌ Failed to submit — try again');
-    return;
-  }
+  if (error) { console.error('Insert error:', error); showToast('❌ Failed to submit — try again'); return; }
 
-  // reset form
   document.getElementById('f-title').value = '';
   document.getElementById('f-desc').value = '';
   document.getElementById('f-category').value = '';
@@ -913,14 +1268,17 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
 // ══════════════════════════════════════════════
 // DETAIL SHEET
 // ══════════════════════════════════════════════
+document.querySelectorAll('.status-btn[data-status]').forEach(btn => {
+  btn.addEventListener('click', () => setStatus(btn.dataset.status));
+});
+document.getElementById('closeSheetBtn').addEventListener('click', () => closeSheet());
+
 function openSheet(id) {
   const issue = issues.find(i => i.id === id);
   if (!issue) return;
   selectedIssueId = id;
-
   document.getElementById('sheetTitle').textContent = issue.title;
   document.getElementById('sheetDesc').textContent = issue.description || 'No additional description provided.';
-
   const priorityColors = { high: 'var(--red)', medium: 'var(--yellow)', low: 'var(--green)' };
   document.getElementById('sheetInfoGrid').innerHTML = `
     <div class="info-block"><div class="label">Status</div><div class="value">${statusLabel(issue.status)}</div></div>
@@ -928,13 +1286,12 @@ function openSheet(id) {
     <div class="info-block"><div class="label">Category</div><div class="value">${issue.category}</div></div>
     <div class="info-block"><div class="label">Location</div><div class="value">${issue.location}</div></div>
     <div class="info-block" style="grid-column:1/-1"><div class="label">Assigned To</div><div class="value">${issue.assignee || 'Unassigned'}</div></div>
+    <div class="info-block" style="grid-column:1/-1"><div class="label">Reported By</div><div class="value">${issue.reported_by_name || 'N/A'}</div></div>
     <div class="info-block" style="grid-column:1/-1"><div class="label">Reported</div><div class="value">${new Date(issue.created_at).toLocaleString()}</div></div>
   `;
-
   document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('selected'));
   const btn = document.querySelector(`.set-${issue.status}`);
   if (btn) btn.classList.add('selected');
-
   document.getElementById('sheetOverlay').classList.add('open');
 }
 
@@ -945,22 +1302,10 @@ function closeSheet() {
 
 async function setStatus(newStatus) {
   if (!selectedIssueId) return;
-
-  const { error } = await supabase
-    .from('issues')
-    .update({ status: newStatus })
-    .eq('id', selectedIssueId);
-
-  if (error) {
-    console.error('Update error:', error);
-    showToast('❌ Failed to update status');
-    return;
-  }
-
-  // Update local state
+  const { error } = await supabase.from('issues').update({ status: newStatus }).eq('id', selectedIssueId);
+  if (error) { console.error('Update error:', error); showToast('❌ Failed to update status'); return; }
   const issue = issues.find(i => i.id === selectedIssueId);
   if (issue) issue.status = newStatus;
-
   document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('selected'));
   document.querySelector(`.set-${newStatus}`).classList.add('selected');
   renderDashboard();
@@ -988,17 +1333,69 @@ function renderHistory() {
 }
 
 // ══════════════════════════════════════════════
-// TOAST
+// ADMIN PANEL
 // ══════════════════════════════════════════════
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toastMsg').textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+document.getElementById('adminTabs').addEventListener('click', e => {
+  const tab = e.target.closest('.admin-tab');
+  if (!tab) return;
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  activeAdminTab = tab.dataset.tab;
+  renderAdminTab();
+});
+
+function renderAdminTab() {
+  let items, tableName, label, hasRole = false;
+  switch (activeAdminTab) {
+    case 'roles': items = allRoles; tableName = 'roles'; label = 'role'; break;
+    case 'locations': items = allLocations; tableName = 'locations'; label = 'location'; break;
+    case 'categories': items = allCategories; tableName = 'categories'; label = 'category'; break;
+    case 'people': items = allStaff; tableName = 'staff'; label = 'person'; hasRole = true; break;
+  }
+  const content = document.getElementById('adminContent');
+  content.innerHTML = `
+    <div class="admin-list">
+      ${items.length === 0 ? '<div class="empty-state"><p>No items yet</p></div>' :
+        items.map(item => `
+          <div class="admin-item">
+            <span>${item.name}${hasRole && item.role ? ' — ' + item.role : ''}</span>
+            <button class="admin-delete" data-id="${item.id}" data-table="${tableName}">✕</button>
+          </div>`).join('')}
+    </div>
+    <div class="admin-add-row">
+      <input type="text" id="adminNewName" placeholder="New ${label} name" />
+      ${hasRole ? '<input type="text" id="adminNewRole" placeholder="Role (optional)" />' : ''}
+      <button class="admin-add-btn" id="adminAddBtn">Add</button>
+    </div>`;
+
+  content.querySelectorAll('.admin-delete').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = parseInt(btn.dataset.id);
+      const tbl = btn.dataset.table;
+      const { error } = await supabase.from(tbl).delete().eq('id', id);
+      if (error) { showToast('❌ Failed to delete: ' + error.message); return; }
+      showToast('✓ Deleted');
+      await loadMasterData(); renderAdminTab(); populateReportDropdowns();
+    });
+  });
+
+  document.getElementById('adminAddBtn').addEventListener('click', async () => {
+    const name = document.getElementById('adminNewName').value.trim();
+    if (!name) { showToast('⚠️ Enter a name'); return; }
+    const insertData = { name };
+    if (hasRole) {
+      const role = document.getElementById('adminNewRole')?.value.trim() || '';
+      if (role) insertData.role = role;
+    }
+    const { error } = await supabase.from(tableName).insert(insertData);
+    if (error) { showToast('❌ Failed to add: ' + error.message); return; }
+    showToast('✓ Added');
+    await loadMasterData(); renderAdminTab(); populateReportDropdowns();
+  });
 }
 
 // ══════════════════════════════════════════════
-// REALTIME — auto-refresh on any issue change
+// REALTIME
 // ══════════════════════════════════════════════
 supabase
   .channel('issues-realtime')
@@ -1012,9 +1409,43 @@ supabase
 // INIT
 // ══════════════════════════════════════════════
 (async () => {
-  await fetchIssues();
-  renderDashboard();
+  await loadMasterData();
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await loadProfile();
+    showAppShell();
+    await showView('dashboard');
+  } else {
+    showAuthScreen();
+  }
+
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      showAuthScreen();
+      document.querySelector('.auth-tabs').style.display = 'none';
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('resetForm').classList.add('hidden');
+      document.getElementById('updatePasswordForm').classList.remove('hidden');
+      clearAuthMessages();
+      showAuthSuccess('Enter your new password below.');
+    } else if (event === 'SIGNED_IN' && session) {
+      currentUser = session.user;
+      await loadProfile();
+      await loadMasterData();
+      showAppShell();
+      await showView('dashboard');
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      currentProfile = null;
+      isAdmin = false;
+      showAuthScreen();
+    }
+  });
 })();
+
+
 </script>
 </body>
 </html>
