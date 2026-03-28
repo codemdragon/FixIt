@@ -534,6 +534,12 @@
       Fix<span>It</span>
     </div>
     <div class="topbar-right" id="topbarRight" style="display:none">
+      <div class="notif-btn" id="topbarAdminBtn" style="display:none;" title="Admin Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </div>
       <div class="notif-btn" id="notifBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -790,13 +796,6 @@
       </svg>
       <span>History</span>
     </div>
-    <div class="nav-item" data-view="admin" id="nav-admin" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-      </svg>
-      <span>Admin</span>
-    </div>
   </nav>
 </div>
 
@@ -1047,9 +1046,9 @@ function showAppShell() {
     document.getElementById('userAvatar').title = currentProfile.nickname;
   }
   if (isAdmin) {
-    document.getElementById('nav-admin').style.display = 'flex';
+    document.getElementById('topbarAdminBtn').style.display = 'flex';
   } else {
-    document.getElementById('nav-admin').style.display = 'none';
+    document.getElementById('topbarAdminBtn').style.display = 'none';
   }
   populateReportDropdowns();
 }
@@ -1108,6 +1107,10 @@ document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
 document.getElementById('nav-report-btn').addEventListener('click', () => {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   showView('report');
+});
+document.getElementById('topbarAdminBtn').addEventListener('click', () => {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  showView('admin');
 });
 
 // ══════════════════════════════════════════════
