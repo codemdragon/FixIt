@@ -569,6 +569,14 @@
         </div>
       </div>
       <div class="user-avatar" id="userAvatar"></div>
+      <!-- Profile Panel -->
+      <div class="notif-panel" id="profilePanel">
+        <div class="notif-panel-header">
+          <h3>👤 My Profile</h3>
+        </div>
+        <div class="notif-panel-body" id="profilePanelBody" style="padding: 16px;">
+        </div>
+      </div>
       <div class="signout-btn" id="signoutBtn" title="Sign Out">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -1048,6 +1056,10 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
       showAuthSuccess(matchedStaff
         ? `Account created & linked to "${matchedStaff.name}"! Check your email to confirm.`
         : 'Account created! Check your email to confirm, then sign in.');
+    } else {
+      await loadProfile();
+      showAppShell();
+      renderDashboard();
     }
   }
 });
@@ -1109,7 +1121,7 @@ async function loadProfile() {
     .from('profiles')
     .select('*, roles(name)')
     .eq('id', currentUser.id)
-    .single();
+    .maybeSingle();
   currentProfile = data;
   isAdmin = data?.roles?.name === 'Admin';
 }
@@ -1303,6 +1315,10 @@ document.getElementById('notifBtn').addEventListener('click', async (e) => {
   e.stopPropagation();
   const panel = document.getElementById('notifPanel');
   if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
+  
+  // Close profile panel if open
+  document.getElementById('profilePanel').classList.remove('open');
+
   await fetchNotifications();
   renderNotifPanel();
   updateNotifBadge();
@@ -1321,11 +1337,44 @@ document.getElementById('clearAllNotifsBtn').addEventListener('click', async () 
   showToast('✓ All notifications cleared');
 });
 
+document.getElementById('userAvatar').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const panel = document.getElementById('profilePanel');
+  if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
+  
+  // Close notif panel if open
+  document.getElementById('notifPanel').classList.remove('open');
+  
+  const body = document.getElementById('profilePanelBody');
+  const roleName = currentProfile?.roles?.name || 'No Role Assigned';
+  const staffStatus = currentProfile?.staff_id 
+    ? '<span style="font-size:11px; padding:3px 8px; border-radius:10px; background:var(--green-dim, #e8f5e9); color:var(--green, #2e7d32); font-weight:600;">● Linked Staff</span>' 
+    : '<span style="font-size:11px; padding:3px 8px; border-radius:10px; background:var(--surface2, #f5f5f5); color:var(--muted, #666); font-weight:600;" title="Ask an admin to link your account to receive notifications">○ Limited Access</span>';
+    
+  body.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div style="font-family:var(--font-display); font-size:18px; font-weight:700;">${currentProfile?.nickname || 'Unknown'}</div>
+      <div style="font-size:13px; color:var(--muted);">${currentUser?.email || ''}</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:12px; border-top:1px solid var(--border);">
+        <span style="font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.04em">${roleName}</span>
+        ${staffStatus}
+      </div>
+    </div>
+  `;
+  panel.classList.add('open');
+});
+
 document.addEventListener('click', (e) => {
-  const panel = document.getElementById('notifPanel');
-  const btn = document.getElementById('notifBtn');
-  if (panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)) {
-    panel.classList.remove('open');
+  const notifPanel = document.getElementById('notifPanel');
+  const notifBtn = document.getElementById('notifBtn');
+  if (notifPanel.classList.contains('open') && !notifPanel.contains(e.target) && !notifBtn.contains(e.target)) {
+    notifPanel.classList.remove('open');
+  }
+  
+  const profilePanel = document.getElementById('profilePanel');
+  const avatarBtn = document.getElementById('userAvatar');
+  if (profilePanel.classList.contains('open') && !profilePanel.contains(e.target) && !avatarBtn.contains(e.target)) {
+    profilePanel.classList.remove('open');
   }
 });
 
