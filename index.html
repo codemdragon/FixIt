@@ -522,6 +522,132 @@
   .admin-add-row input { flex:1; font-family:var(--font-body); font-size:14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text); padding:12px 14px; outline:none; -webkit-appearance:none; }
   .admin-add-row input:focus { border-color:var(--accent); }
   .admin-add-btn { font-family:var(--font-display); font-size:13px; font-weight:700; padding:12px 20px; background:var(--accent); color:#0d0f12; border:none; border-radius:var(--radius-sm); cursor:pointer; white-space:nowrap; }
+
+  /* ── DAY COUNTER CHIP ── */
+  .day-counter {
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+    padding:3px 8px; border-radius:6px;
+    margin-left: auto;
+  }
+  .day-counter.fresh { background:var(--green-dim); color:var(--green); }
+  .day-counter.aging { background:var(--yellow-dim); color:var(--yellow); }
+  .day-counter.overdue { background:var(--red-dim); color:var(--red); }
+  .day-counter.resolved-counter { background:var(--green-dim); color:var(--green); }
+
+  /* ── NOTIFICATION PANEL ── */
+  .notif-panel {
+    position:absolute; top:calc(100% + 8px); right:0;
+    width:320px; max-height:400px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:0 12px 40px rgba(0,0,0,0.5);
+    z-index:300;
+    display:none;
+    animation:fadeUp 0.2s ease;
+    overflow:hidden;
+  }
+  .notif-panel.open { display:block; }
+  .notif-panel-header {
+    padding:14px 16px; border-bottom:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .notif-panel-header h3 {
+    font-family:var(--font-display); font-size:15px; font-weight:700;
+  }
+  .notif-clear-btn {
+    font-size:11px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer;
+  }
+  .notif-panel-body {
+    max-height:320px; overflow-y:auto; padding:8px;
+  }
+  .notif-item {
+    display:flex; align-items:flex-start; gap:10px;
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    transition:background 0.12s;
+    cursor:pointer;
+  }
+  .notif-item:hover { background:var(--surface2); }
+  .notif-item .notif-icon {
+    width:32px; height:32px; flex-shrink:0;
+    background:var(--accent-dim); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px;
+  }
+  .notif-item .notif-content { flex:1; min-width:0; }
+  .notif-item .notif-title {
+    font-size:13px; font-weight:600; color:var(--text);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .notif-item .notif-sub {
+    font-size:11px; color:var(--muted); margin-top:2px;
+  }
+  .notif-item .notif-time {
+    font-size:10px; color:var(--muted); margin-top:3px;
+  }
+  .notif-dismiss {
+    width:22px; height:22px; flex-shrink:0;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:50%; font-size:10px; color:var(--muted);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all 0.12s;
+    margin-top:2px;
+  }
+  .notif-dismiss:hover { background:var(--red-dim); color:var(--red); border-color:var(--red); }
+  .notif-empty {
+    text-align:center; padding:30px 16px; color:var(--muted); font-size:13px;
+  }
+  .notif-item.due .notif-icon { background:var(--red-dim); }
+  .notif-item.upcoming .notif-icon { background:var(--blue-dim); }
+
+  /* ── REMINDER FORM IN SHEET ── */
+  .reminder-section { margin-top:16px; }
+  .reminder-section .section-title {
+    font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); margin-bottom:10px;
+  }
+  .reminder-form-row {
+    display:flex; gap:8px; margin-bottom:8px;
+  }
+  .reminder-form-row input[type="datetime-local"] {
+    flex:1; font-family:var(--font-body); font-size:13px;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:var(--radius-sm); color:var(--text);
+    padding:10px 12px; outline:none;
+    -webkit-appearance:none; appearance:none;
+    color-scheme:dark;
+  }
+  .reminder-form-row input:focus { border-color:var(--accent); }
+  .set-reminder-btn {
+    font-family:var(--font-display); font-size:12px; font-weight:700;
+    padding:10px 16px; background:var(--accent); color:#0d0f12;
+    border:none; border-radius:var(--radius-sm); cursor:pointer;
+    white-space:nowrap; transition:opacity 0.12s;
+  }
+  .set-reminder-btn:active { opacity:0.8; }
+  .reminder-msg-input {
+    width:100%; font-family:var(--font-body); font-size:13px;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:var(--radius-sm); color:var(--text);
+    padding:10px 12px; outline:none;
+    -webkit-appearance:none; appearance:none;
+  }
+  .reminder-msg-input:focus { border-color:var(--accent); }
+  .existing-reminders { margin-top:10px; }
+  .existing-reminder {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 10px; background:var(--surface2); border:1px solid var(--border);
+    border-radius:var(--radius-sm); margin-bottom:6px; font-size:12px;
+  }
+  .existing-reminder .er-info { display:flex; flex-direction:column; gap:2px; }
+  .existing-reminder .er-time { color:var(--accent); font-weight:600; }
+  .existing-reminder .er-msg { color:var(--muted); font-size:11px; }
+  .er-delete {
+    width:22px; height:22px; background:var(--red-dim); border:none; border-radius:50%;
+    color:var(--red); font-size:10px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
 </style>
 </head>
 <body>
@@ -546,6 +672,16 @@
           <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
         </svg>
         <div class="notif-badge" id="notifBadge" style="display:none">0</div>
+      </div>
+      <!-- Notification Panel -->
+      <div class="notif-panel" id="notifPanel">
+        <div class="notif-panel-header">
+          <h3>🔔 Reminders</h3>
+          <button class="notif-clear-btn" id="clearAllRemindersBtn">Clear All</button>
+        </div>
+        <div class="notif-panel-body" id="notifPanelBody">
+          <div class="notif-empty">No reminders yet</div>
+        </div>
       </div>
       <div class="user-avatar" id="userAvatar" title="You"></div>
       <div class="signout-btn" id="signoutBtn" title="Sign Out">
@@ -814,6 +950,16 @@
         <button class="status-btn set-resolved" data-status="resolved">🟢 Resolved</button>
       </div>
     </div>
+    <!-- Reminder Section -->
+    <div class="reminder-section">
+      <div class="section-title">⏰ Set Reminder</div>
+      <div class="reminder-form-row">
+        <input type="datetime-local" id="reminderDatetime" />
+        <button class="set-reminder-btn" id="setReminderBtn">Set</button>
+      </div>
+      <input class="reminder-msg-input" id="reminderMessage" placeholder="Reminder note (optional)" />
+      <div class="existing-reminders" id="existingReminders"></div>
+    </div>
     <button class="close-sheet" id="closeSheetBtn">Close</button>
   </div>
 </div>
@@ -858,6 +1004,28 @@ function timeAgo(dateStr) {
   if (days < 30) return days + 'd ago';
   return Math.floor(days / 30) + 'mo ago';
 }
+function daysOpen(createdAt) {
+  const diff = Date.now() - new Date(createdAt).getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+function daysToResolve(createdAt, resolvedAt) {
+  if (!resolvedAt) return null;
+  const diff = new Date(resolvedAt).getTime() - new Date(createdAt).getTime();
+  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+function dayCounterChip(issue) {
+  if (issue.status === 'resolved') {
+    const d = daysToResolve(issue.created_at, issue.resolved_at);
+    if (d !== null) return `<span class="day-counter resolved-counter">✓ ${d}d to resolve</span>`;
+    return '';
+  }
+  const d = daysOpen(issue.created_at);
+  let cls = 'fresh';
+  if (d >= 7) cls = 'overdue';
+  else if (d >= 3) cls = 'aging';
+  const label = d === 0 ? 'Today' : d === 1 ? '1 day open' : `${d} days open`;
+  return `<span class="day-counter ${cls}">⏱ ${label}</span>`;
+}
 function statusLabel(s) {
   return s === 'pending' ? 'Pending' : s === 'inprogress' ? 'In Progress' : 'Resolved';
 }
@@ -880,6 +1048,7 @@ function issueCardHTML(i) {
       <span class="meta-chip">🔧 ${i.category}</span>
       ${i.assignee && i.assignee !== 'Unassigned' ? `<span class="meta-chip">👤 ${i.assignee.split(' ')[0]}</span>` : ''}
       ${reportedBy}
+      ${dayCounterChip(i)}
     </div>
     <div class="issue-time">${timeAgo(i.created_at)}</div>
   </div>`;
@@ -1114,27 +1283,124 @@ document.getElementById('topbarAdminBtn').addEventListener('click', () => {
 });
 
 // ══════════════════════════════════════════════
-// NOTIFICATIONS (bell icon)
+// NOTIFICATIONS & REMINDERS
 // ══════════════════════════════════════════════
-function updateNotifications() {
-  if (!currentProfile) return;
-  const nick = currentProfile.nickname.toLowerCase();
-  const myActive = issues.filter(i =>
-    i.status !== 'resolved' && i.assignee &&
-    i.assignee.toLowerCase().includes(nick)
-  );
-  const badge = document.getElementById('notifBadge');
-  badge.textContent = myActive.length;
-  badge.style.display = myActive.length > 0 ? 'flex' : 'none';
+let userReminders = [];
+
+async function fetchReminders() {
+  if (!currentUser) return;
+  const { data } = await supabase
+    .from('reminders')
+    .select('*, issues(title)')
+    .eq('user_id', currentUser.id)
+    .order('remind_at', { ascending: true });
+  userReminders = data || [];
 }
 
-document.getElementById('notifBtn').addEventListener('click', () => {
-  // Switch to user mode and dashboard
-  viewMode = 'user';
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.mode-btn[data-mode="user"]').classList.add('active');
-  showView('dashboard');
+function updateNotifications() {
+  if (!currentProfile) return;
+  const now = new Date();
+  const dueReminders = userReminders.filter(r => !r.is_read && new Date(r.remind_at) <= now);
+  const badge = document.getElementById('notifBadge');
+  badge.textContent = dueReminders.length;
+  badge.style.display = dueReminders.length > 0 ? 'flex' : 'none';
+}
+
+function renderNotifPanel() {
+  const body = document.getElementById('notifPanelBody');
+  const now = new Date();
+  const active = userReminders.filter(r => !r.is_read);
+  if (active.length === 0) {
+    body.innerHTML = '<div class="notif-empty">🔔 No reminders — all clear!</div>';
+    return;
+  }
+  body.innerHTML = active.map(r => {
+    const due = new Date(r.remind_at);
+    const isDue = due <= now;
+    const issueTitle = r.issues?.title || 'Issue #' + r.issue_id;
+    const timeStr = due.toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+    return `
+      <div class="notif-item ${isDue ? 'due' : 'upcoming'}" data-reminder-id="${r.id}" data-issue-id="${r.issue_id}">
+        <div class="notif-icon">${isDue ? '🔴' : '🔵'}</div>
+        <div class="notif-content">
+          <div class="notif-title">${issueTitle}</div>
+          <div class="notif-sub">${r.message || 'Reminder'}</div>
+          <div class="notif-time">${isDue ? '⚡ Due now' : '📅 ' + timeStr}</div>
+        </div>
+        <button class="notif-dismiss" data-rid="${r.id}" title="Dismiss">✕</button>
+      </div>`;
+  }).join('');
+
+  body.querySelectorAll('.notif-dismiss').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const rid = parseInt(btn.dataset.rid);
+      await supabase.from('reminders').update({ is_read: true }).eq('id', rid);
+      await fetchReminders();
+      renderNotifPanel();
+      updateNotifications();
+      showToast('✓ Reminder dismissed');
+    });
+  });
+
+  body.querySelectorAll('.notif-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const iid = parseInt(item.dataset.issueId);
+      document.getElementById('notifPanel').classList.remove('open');
+      openSheet(iid);
+    });
+  });
+}
+
+document.getElementById('notifBtn').addEventListener('click', async (e) => {
+  e.stopPropagation();
+  const panel = document.getElementById('notifPanel');
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    return;
+  }
+  await fetchReminders();
+  renderNotifPanel();
+  updateNotifications();
+  panel.classList.add('open');
 });
+
+document.getElementById('clearAllRemindersBtn').addEventListener('click', async () => {
+  if (!currentUser) return;
+  const dueIds = userReminders.filter(r => !r.is_read).map(r => r.id);
+  if (dueIds.length === 0) return;
+  for (const id of dueIds) {
+    await supabase.from('reminders').update({ is_read: true }).eq('id', id);
+  }
+  await fetchReminders();
+  renderNotifPanel();
+  updateNotifications();
+  showToast('✓ All reminders cleared');
+});
+
+// Close panel on outside click
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('notifPanel');
+  const btn = document.getElementById('notifBtn');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)) {
+    panel.classList.remove('open');
+  }
+});
+
+// Periodic reminder check (every 60s)
+let lastReminderAlertIds = new Set();
+setInterval(async () => {
+  if (!currentUser) return;
+  await fetchReminders();
+  const now = new Date();
+  const newlyDue = userReminders.filter(r => !r.is_read && new Date(r.remind_at) <= now && !lastReminderAlertIds.has(r.id));
+  newlyDue.forEach(r => {
+    lastReminderAlertIds.add(r.id);
+    const title = r.issues?.title || 'Issue #' + r.issue_id;
+    showToast('⏰ Reminder: ' + title);
+  });
+  updateNotifications();
+}, 60000);
 
 // ══════════════════════════════════════════════
 // MODE TOGGLE (Universal vs User)
@@ -1276,18 +1542,33 @@ document.querySelectorAll('.status-btn[data-status]').forEach(btn => {
 });
 document.getElementById('closeSheetBtn').addEventListener('click', () => closeSheet());
 
-function openSheet(id) {
+async function openSheet(id) {
   const issue = issues.find(i => i.id === id);
   if (!issue) return;
   selectedIssueId = id;
   document.getElementById('sheetTitle').textContent = issue.title;
   document.getElementById('sheetDesc').textContent = issue.description || 'No additional description provided.';
   const priorityColors = { high: 'var(--red)', medium: 'var(--yellow)', low: 'var(--green)' };
+
+  // Day counter info
+  const days = daysOpen(issue.created_at);
+  let daysBlock = '';
+  if (issue.status === 'resolved' && issue.resolved_at) {
+    const rDays = daysToResolve(issue.created_at, issue.resolved_at);
+    daysBlock = `
+      <div class="info-block"><div class="label">Days to Resolve</div><div class="value" style="color:var(--green)">${rDays} day${rDays !== 1 ? 's' : ''}</div></div>
+      <div class="info-block"><div class="label">Resolved On</div><div class="value">${new Date(issue.resolved_at).toLocaleString()}</div></div>`;
+  } else {
+    const dColor = days >= 7 ? 'var(--red)' : days >= 3 ? 'var(--yellow)' : 'var(--green)';
+    daysBlock = `<div class="info-block"><div class="label">Days Open</div><div class="value" style="color:${dColor}">${days} day${days !== 1 ? 's' : ''}</div></div>`;
+  }
+
   document.getElementById('sheetInfoGrid').innerHTML = `
     <div class="info-block"><div class="label">Status</div><div class="value">${statusLabel(issue.status)}</div></div>
     <div class="info-block"><div class="label">Priority</div><div class="value" style="color:${priorityColors[issue.priority]}">${issue.priority.charAt(0).toUpperCase()+issue.priority.slice(1)}</div></div>
     <div class="info-block"><div class="label">Category</div><div class="value">${issue.category}</div></div>
     <div class="info-block"><div class="label">Location</div><div class="value">${issue.location}</div></div>
+    ${daysBlock}
     <div class="info-block" style="grid-column:1/-1"><div class="label">Assigned To</div><div class="value">${issue.assignee || 'Unassigned'}</div></div>
     <div class="info-block" style="grid-column:1/-1"><div class="label">Reported By</div><div class="value">${issue.reported_by_name || 'N/A'}</div></div>
     <div class="info-block" style="grid-column:1/-1"><div class="label">Reported</div><div class="value">${new Date(issue.created_at).toLocaleString()}</div></div>
@@ -1295,7 +1576,50 @@ function openSheet(id) {
   document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('selected'));
   const btn = document.querySelector(`.set-${issue.status}`);
   if (btn) btn.classList.add('selected');
+
+  // Set default reminder datetime to 1 hour from now
+  const defDate = new Date(Date.now() + 3600000);
+  const y = defDate.getFullYear(), mo = String(defDate.getMonth()+1).padStart(2,'0'), da = String(defDate.getDate()).padStart(2,'0'), hh = String(defDate.getHours()).padStart(2,'0'), mm = String(defDate.getMinutes()).padStart(2,'0');
+  document.getElementById('reminderDatetime').value = `${y}-${mo}-${da}T${hh}:${mm}`;
+  document.getElementById('reminderMessage').value = '';
+
+  // Load existing reminders for this issue
+  await loadSheetReminders(id);
+
   document.getElementById('sheetOverlay').classList.add('open');
+}
+
+async function loadSheetReminders(issueId) {
+  const container = document.getElementById('existingReminders');
+  if (!currentUser) { container.innerHTML = ''; return; }
+  const { data } = await supabase.from('reminders')
+    .select('*')
+    .eq('issue_id', issueId)
+    .eq('user_id', currentUser.id)
+    .eq('is_read', false)
+    .order('remind_at');
+  const reminders = data || [];
+  if (reminders.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = reminders.map(r => {
+    const dt = new Date(r.remind_at).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+    return `
+      <div class="existing-reminder">
+        <div class="er-info">
+          <span class="er-time">⏰ ${dt}</span>
+          ${r.message ? `<span class="er-msg">${r.message}</span>` : ''}
+        </div>
+        <button class="er-delete" data-rid="${r.id}">✕</button>
+      </div>`;
+  }).join('');
+  container.querySelectorAll('.er-delete').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await supabase.from('reminders').delete().eq('id', parseInt(btn.dataset.rid));
+      await loadSheetReminders(issueId);
+      await fetchReminders();
+      updateNotifications();
+      showToast('✓ Reminder removed');
+    });
+  });
 }
 
 function closeSheet() {
@@ -1305,10 +1629,20 @@ function closeSheet() {
 
 async function setStatus(newStatus) {
   if (!selectedIssueId) return;
-  const { error } = await supabase.from('issues').update({ status: newStatus }).eq('id', selectedIssueId);
+  const updateData = { status: newStatus };
+  // Track resolved_at
+  if (newStatus === 'resolved') {
+    updateData.resolved_at = new Date().toISOString();
+  } else {
+    updateData.resolved_at = null;
+  }
+  const { error } = await supabase.from('issues').update(updateData).eq('id', selectedIssueId);
   if (error) { console.error('Update error:', error); showToast('❌ Failed to update status'); return; }
   const issue = issues.find(i => i.id === selectedIssueId);
-  if (issue) issue.status = newStatus;
+  if (issue) {
+    issue.status = newStatus;
+    issue.resolved_at = updateData.resolved_at;
+  }
   document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('selected'));
   document.querySelector(`.set-${newStatus}`).classList.add('selected');
   renderDashboard();
@@ -1408,6 +1742,31 @@ supabase
   })
   .subscribe();
 
+// Set Reminder button handler
+document.getElementById('setReminderBtn').addEventListener('click', async () => {
+  if (!currentUser || !selectedIssueId) return;
+  const dt = document.getElementById('reminderDatetime').value;
+  if (!dt) { showToast('⚠️ Pick a date and time'); return; }
+  const remindAt = new Date(dt);
+  if (remindAt <= new Date()) { showToast('⚠️ Pick a future time'); return; }
+  const msg = document.getElementById('reminderMessage').value.trim();
+  const btn = document.getElementById('setReminderBtn');
+  btn.disabled = true; btn.textContent = '...';
+  const { error } = await supabase.from('reminders').insert({
+    issue_id: selectedIssueId,
+    user_id: currentUser.id,
+    remind_at: remindAt.toISOString(),
+    message: msg
+  });
+  btn.disabled = false; btn.textContent = 'Set';
+  if (error) { showToast('❌ Failed: ' + error.message); return; }
+  showToast('✓ Reminder set!');
+  document.getElementById('reminderMessage').value = '';
+  await loadSheetReminders(selectedIssueId);
+  await fetchReminders();
+  updateNotifications();
+});
+
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
@@ -1417,8 +1776,15 @@ supabase
   if (session) {
     currentUser = session.user;
     await loadProfile();
+    await fetchReminders();
     showAppShell();
     await showView('dashboard');
+    // Check for due reminders on load
+    const now = new Date();
+    userReminders.filter(r => !r.is_read && new Date(r.remind_at) <= now).forEach(r => {
+      lastReminderAlertIds.add(r.id);
+    });
+    updateNotifications();
   } else {
     showAuthScreen();
   }
