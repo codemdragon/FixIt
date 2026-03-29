@@ -1617,6 +1617,18 @@ async function openSheet(id) {
   const activeBtn = document.querySelector(`.set-${issue.status}`);
   if (activeBtn) activeBtn.classList.add('selected');
 
+  // Determine if user can update the status
+  const unassigned = !issue.assignee || issue.assignee.toLowerCase() === 'unassigned';
+  const isAssignee = currentProfile && issue.assignee && issue.assignee.toLowerCase().includes(currentProfile.nickname.toLowerCase());
+  const canUpdate = isAdmin || isAssignee || unassigned;
+  
+  const statusActions = document.querySelector('.status-actions');
+  if (canUpdate) {
+    statusActions.style.display = 'flex';
+  } else {
+    statusActions.style.display = 'none';
+  }
+
   document.getElementById('sheetOverlay').classList.add('open');
 }
 
